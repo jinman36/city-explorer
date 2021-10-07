@@ -7,18 +7,19 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Img from 'react-bootstrap/Image'
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       cityName: '',
       locationObj: {},
-      map: {}
+      map: {},
+      errorCode: false
     }
   }
   getLocation = async () => {
     let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_API_KEY}&q=${this.state.cityName}&format=json`;
-
     try {
       let locData = await axios.get(url)
       // console.log(locData)
@@ -29,10 +30,9 @@ class App extends React.Component {
     }
     catch (error) {
       console.log(`there was an error: ${error}`)
-
-    };
+     };
   }
- 
+
   render() {
     return (
       <>
@@ -43,7 +43,6 @@ class App extends React.Component {
           <Button variant="info" onClick={this.getLocation}>
             Explore!
           </Button>
-
         </Container>
         {this.state.locationObj.display_name &&
           <Container>
@@ -55,12 +54,11 @@ class App extends React.Component {
               <Col><h2>longitude: {this.state.locationObj.lon}</h2></Col>
             </Row>
             <Row className='border border-info'>
-              <Col><Img src= {this.state.map} roundedCircle fluid alt='map location'></Img></Col>
+              <Col><Img src={this.state.map} roundedCircle fluid alt='map location'></Img></Col>
               <Col></Col>
             </Row>
           </Container>
         }
-
       </>
     );
 
