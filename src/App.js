@@ -15,8 +15,7 @@ class App extends React.Component {
     }
   }
   getLocation = async () => {
-    let apiKey = 'pk.a4a323609b1a833bc130851d6a2b59ec';
-    let url = `https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${this.state.cityName}&format=json`;
+    let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_API_KEY}&q=${this.state.cityName}&format=json`;
 
     try {
     let locData = await axios.get(url)
