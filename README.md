@@ -24,11 +24,12 @@ This App is meant to provide a user a search bar, and the ability to input city 
 ## Credit and Collaborations
 Accountability Partner: Angela D.
 
-Name of feature: ________________________________
+Card 2:
+Name of feature: Locations: As a user of City Explorer, I want to enter the name of a location so that I can see the exact latitude and longitude of that location.
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 30 min
 
-Start time: _____
+Start time: 6pm
 
 Finish time: _____
 
