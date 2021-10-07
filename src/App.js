@@ -14,15 +14,20 @@ class App extends React.Component {
       locationObj: {}
     }
   }
-
   getLocation = async () => {
     let apiKey = 'pk.a4a323609b1a833bc130851d6a2b59ec';
     let url = `https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${this.state.cityName}&format=json`;
+
+    try {
     let locData = await axios.get(url)
-    let oneObject = locData.data[0]
-    this.setState({ locationObj: oneObject })
-    console.log(oneObject);
+    this.setState({ locationObj: locData.data[0] })
+
+  }
+  catch (error) {
+    console.log(`there was an error: ${error}`)
+    
   };
+}
 
 
   render() {
