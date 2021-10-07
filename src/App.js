@@ -5,30 +5,34 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Img from 'react-bootstrap/Image'
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       cityName: '',
-      locationObj: {}
+      locationObj: {},
+      map: {}
     }
   }
   getLocation = async () => {
     let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_API_KEY}&q=${this.state.cityName}&format=json`;
 
     try {
-    let locData = await axios.get(url)
-    this.setState({ locationObj: locData.data[0] })
+      let locData = await axios.get(url)
+      // console.log(locData)
+      let oneObject = locData.data[0]
+      this.setState({ locationObj: oneObject })
+      let mapUrl = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${oneObject.lat},${oneObject.lon}&zoom=14&size=480x480`
+      this.setState({ map: mapUrl })
+    }
+    catch (error) {
+      console.log(`there was an error: ${error}`)
 
+    };
   }
-  catch (error) {
-    console.log(`there was an error: ${error}`)
-    
-  };
-}
-
-
+ 
   render() {
     return (
       <>
@@ -44,14 +48,19 @@ class App extends React.Component {
         {this.state.locationObj.display_name &&
           <Container>
             <Row>
-              <Col><h2>City Name: {this.state.locationObj.display_name}</h2></Col>
+              <Col><h1>{this.state.locationObj.display_name}</h1></Col>
             </Row>
-            <Row>
+            <Row className='border border-info'>
               <Col><h2>Latitude: {this.state.locationObj.lat}</h2></Col>
               <Col><h2>longitude: {this.state.locationObj.lon}</h2></Col>
             </Row>
+            <Row className='border border-info'>
+              <Col><Img src= {this.state.map} roundedCircle fluid alt='map location'></Img></Col>
+              <Col></Col>
+            </Row>
           </Container>
         }
+
       </>
     );
 
