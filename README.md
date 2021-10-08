@@ -24,14 +24,15 @@ This App is meant to provide a user a search bar, and the ability to input city 
 ## Credit and Collaborations
 Accountability Partner: Angela D.
 
-Name of feature: ________________________________
+Card 2:
+Name of feature: Card 1,2, and 3
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 30 min
 
-Start time: _____
+Start time: 6pm
 
-Finish time: _____
+Finish time: 930
 
-Actual time needed to complete: _____
+Actual time needed to complete: I got sucked into the formatting and Bootstrap/CSS for way too long, I should have been more objective focused. - and I forgot to complete this card between card 1, 2, and 3.
 
 ![Flow Diagram](wireframe.JPG)
