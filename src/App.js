@@ -5,8 +5,10 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Img from 'react-bootstrap/Image'
-import AlertDismissible from './AlertDismissible';
+import AlertDismissible from './components/AlertDismissible';
+import Map from './components/Map';
+import LatLong from './components/LatLong.js'
+// import CitySearch from './components/CitySearch';
 
 
 class App extends React.Component {
@@ -16,9 +18,16 @@ class App extends React.Component {
       cityName: '',
       locationObj: {},
       map: {},
-      errorCode: {}
+      errorCode: {},
+      errorAlert: false
     }
   }
+
+  onErrorClose = () => {
+    this.setState({ errorAlert: false })
+  }
+
+
   getLocation = async () => {
     let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_API_KEY}&q=${this.state.cityName}&format=json`;
     try {
@@ -31,7 +40,8 @@ class App extends React.Component {
     }
     catch (error) {
       console.log(`there was an error: ${error}`)
-      this.setState({ errorCode: error})
+      this.setState({ errorCode: error.message })
+      this.setState({ errorAlert: true })
     };
   }
 
@@ -46,26 +56,22 @@ class App extends React.Component {
             Explore!
           </Button>
         </Container>
-        <AlertDismissible />
+        {/* <CitySearch search={this.state.cityName} /> */}
+        <AlertDismissible
+          errorCode={this.state.errorCode}
+          errorAlert={this.state.errorAlert}
+          onErrorClose={this.onErrorClose}/>
         {this.state.locationObj.display_name &&
           <Container>
             <Row>
               <Col><h1>{this.state.locationObj.display_name}</h1></Col>
             </Row>
-            <Row className='border border-info'>
-              <Col><h2>Latitude: {this.state.locationObj.lat}</h2></Col>
-              <Col><h2>longitude: {this.state.locationObj.lon}</h2></Col>
-            </Row>
-            <Row className='border border-info'>
-              <Col><Img src={this.state.map} roundedCircle fluid alt='map location'></Img></Col>
-              <Col></Col>
-            </Row>
+            <LatLong latLong={this.state.locationObj} />
+            <Map map={this.state.map} />
           </Container>
         }
       </>
     );
-    
-
   }
 }
 
