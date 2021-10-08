@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Img from 'react-bootstrap/Image'
+import AlertDismissible from './AlertDismissible';
 
 
 class App extends React.Component {
@@ -30,7 +31,8 @@ class App extends React.Component {
     }
     catch (error) {
       console.log(`there was an error: ${error}`)
-     };
+      this.setState({ errorCode: error})
+    };
   }
 
   render() {
@@ -44,6 +46,7 @@ class App extends React.Component {
             Explore!
           </Button>
         </Container>
+        <AlertDismissible />
         {this.state.locationObj.display_name &&
           <Container>
             <Row>
@@ -61,7 +64,7 @@ class App extends React.Component {
         }
       </>
     );
-
+    
 
   }
 }
