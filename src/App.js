@@ -16,7 +16,7 @@ class App extends React.Component {
       cityName: '',
       locationObj: {},
       map: {},
-      errorCode: false
+      errorCode: {}
     }
   }
   getLocation = async () => {
