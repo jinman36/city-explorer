@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 import AlertDismissible from './components/AlertDismissible';
 import Map from './components/Map';
 import LatLong from './components/LatLong.js'
+import Weather from './components/Weather'
 // import CitySearch from './components/CitySearch';
 
 
@@ -19,7 +20,8 @@ class App extends React.Component {
       locationObj: {},
       map: {},
       errorCode: {},
-      errorAlert: false
+      errorAlert: false,
+      weather: {}
     }
   }
 
@@ -30,20 +32,30 @@ class App extends React.Component {
 
   getLocation = async () => {
     let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_API_KEY}&q=${this.state.cityName}&format=json`;
+
     try {
       let locData = await axios.get(url)
       // console.log(locData)
-      let oneObject = locData.data[0]
+      let oneObject = locData.data[0];
+      // console.log(oneObject)
       this.setState({ locationObj: oneObject })
+
       let mapUrl = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${oneObject.lat},${oneObject.lon}&zoom=14&size=480x480`
       this.setState({ map: mapUrl })
+
+      let weatherUrl = `localhost:3001/weather?searchQuery=${this.state.cityName}`
+      this.setState({weather: weatherUrl})
+      console.log(this.state.weather)
     }
+
+
     catch (error) {
-      console.log(`there was an error: ${error}`)
+      console.log(`there was an App.js error: ${error}`)
       this.setState({ errorCode: error.message })
       this.setState({ errorAlert: true })
     };
   }
+
 
   render() {
     return (
@@ -67,7 +79,13 @@ class App extends React.Component {
               <Col><h1>{this.state.locationObj.display_name}</h1></Col>
             </Row>
             <LatLong latLong={this.state.locationObj} />
-            <Map map={this.state.map} />
+            <Row>
+            <Col><Map map={this.state.map} /></Col>
+            <Col>
+            <Weather 
+            weather={this.state.weather}/> 
+            </Col>
+            </Row>
           </Container>
         }
       </>
