@@ -9,7 +9,7 @@ import AlertDismissible from './components/AlertDismissible';
 import Map from './components/Map';
 import LatLong from './components/LatLong.js'
 import Weather from './components/Weather'
-// import CitySearch from './components/CitySearch';
+
 
 
 class App extends React.Component {
@@ -21,7 +21,7 @@ class App extends React.Component {
       map: {},
       errorCode: {},
       errorAlert: false,
-      weather: {}
+      weather: []
     }
   }
 
@@ -42,22 +42,32 @@ class App extends React.Component {
 
       let mapUrl = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${oneObject.lat},${oneObject.lon}&zoom=14&size=480x480`
       this.setState({ map: mapUrl })
-
-      let weatherUrl = `localhost:3001/weather?searchQuery=${this.state.cityName}`
-      this.setState({weather: weatherUrl})
-      console.log(this.state.weather)
+      this.getWeather()
     }
-
-
     catch (error) {
       console.log(`there was an App.js error: ${error}`)
       this.setState({ errorCode: error.message })
       this.setState({ errorAlert: true })
     };
   }
+  
+  getWeather = async () => {
+    let weatherUrl = `http://localhost:3001/weather?lat=${this.state.locationObj.lat}&lon=${this.state.locationObj.lon}&city=${this.state.cityName}`
 
-
+    try {
+      let weatherData = await axios.get(weatherUrl)
+      let weatherObject = weatherData.data
+      this.setState({weather: weatherObject})
+    }
+    catch (error) {
+      console.log(`there was an error with the weather call: ${error}`)
+      this.setState({ errorCode: error.message })
+      this.setState({ errorAlert: true })
+    };
+  }
+  
   render() {
+    // console.log(this.state.weather)
     return (
       <>
         <Container className='d-flex justify-content-center m-4'>
@@ -68,7 +78,7 @@ class App extends React.Component {
             Explore!
           </Button>
         </Container>
-        {/* <CitySearch search={this.state.cityName} /> */}
+
         <AlertDismissible
           errorCode={this.state.errorCode}
           errorAlert={this.state.errorAlert}
@@ -81,11 +91,13 @@ class App extends React.Component {
             <LatLong latLong={this.state.locationObj} />
             <Row>
             <Col><Map map={this.state.map} /></Col>
-            <Col>
-            <Weather 
-            weather={this.state.weather}/> 
-            </Col>
             </Row>
+            <Col>
+            {this.state.weather.length > 0 &&
+            <Weather weather={this.state.weather}/>      
+            
+            }
+            </Col>
           </Container>
         }
       </>

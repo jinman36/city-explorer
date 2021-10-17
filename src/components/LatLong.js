@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col'
 class LatLong extends React.Component {
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
     return (
       <>
         <Row className='border border-info'>
