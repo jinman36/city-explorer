@@ -1,44 +1,48 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Img from 'react-bootstrap/Image'
+import Card from 'react-bootstrap/Card'
+
 
 class Movie extends React.Component {
-
+  
   render() {
-    // let movieArr = this.props.movies.map((element, idx) => 
-    // key={idx},
-    // title={element.title},
-    // overview={element.overview},
-    // votes={element.average_votes},
-    // popularity={element.popularity},
-    // release={element.release_date}
-       
-    // )
     return (
       <>
-      <Row className='d-flex justify-center m-1 border border-info'>
-        <h1>Movies</h1>
-
-      {/* <Row>
-        {movieArr}
-      </Row> */}
-
-
-        <Row className='justify-center m-1 border border-info'>
-          <Col>
-            <h1>{this.props.movies[0].title}</h1>
-            <h4>{this.props.movies[0].overview}</h4>
-            <h4>Average Votes: {this.props.movies[0].average_votes}</h4>
-            <h4>Popularity: {this.props.movies[0].popularity}</h4>
-            <h4>Release Date: {this.props.movies[0].release_date}</h4>
-          </Col>
-          <Col>
-            <Img src={this.props.movies[0].image} roundedCircle fluid alt='Movie Poster'></Img>
-          </Col>
+        <Row className="m-3 justify-content-center ">
+         <Card className="m-1" bg='secondary' style={{ width: '25rem' }} border='dark'>
+          <Card.Img style={{ height: '20rem' }} variant="top" src={this.props.movies[0].image} />
+          <Card.Body>
+            <Card.Title>{this.props.movies[0].title}</Card.Title>
+            <Card.Text>
+              Description: {this.props.movies[0].overview} <br />
+              Average Votes: {this.props.movies[0].average_votes} <br />
+              Release Date: {this.props.movies[0].release_date} <br />
+            </Card.Text>
+          </Card.Body>
+        </Card>
+        <Card className="m-1" bg='secondary' style={{ width: '25rem' }} border='dark'>
+          <Card.Img style={{ height: '20rem' }} variant="top" src={this.props.movies[1].image} />
+          <Card.Body>
+            <Card.Title>{this.props.movies[1].title}</Card.Title>
+            <Card.Text>
+              Description: {this.props.movies[1].overview} <br />
+              Average Votes: {this.props.movies[1].average_votes} <br />
+              Release Date: {this.props.movies[1].release_date} <br />
+            </Card.Text>
+          </Card.Body>
+        </Card>
+        <Card className="m-1" bg='secondary' style={{ width: '25rem' }} border='dark'>
+          <Card.Img style={{ height: '20rem' }} variant="top" src={this.props.movies[2].image} />
+          <Card.Body>
+            <Card.Title>{this.props.movies[2].title}</Card.Title>
+            <Card.Text>
+              Description: {this.props.movies[2].overview} <br />
+              Average Votes: {this.props.movies[2].average_votes} <br />
+              Release Date: {this.props.movies[2].release_date} <br />
+            </Card.Text>
+          </Card.Body>
+        </Card>
         </Row>
-
-      </Row>
       </>
     )
   }
