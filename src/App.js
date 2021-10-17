@@ -9,6 +9,7 @@ import AlertDismissible from './components/AlertDismissible';
 import Map from './components/Map';
 import LatLong from './components/LatLong.js'
 import Weather from './components/Weather'
+import Movie from './components/Movie'
 
 
 
@@ -21,12 +22,18 @@ class App extends React.Component {
       map: {},
       errorCode: {},
       errorAlert: false,
-      weather: []
+      weather: [],
+      movies: [],
+      movieBar: false
     }
   }
 
   onErrorClose = () => {
     this.setState({ errorAlert: false })
+  }
+
+  onMovieClose = () => {
+    this.setState({ movieBar: false })
   }
 
 
@@ -35,12 +42,10 @@ class App extends React.Component {
 
     try {
       let locData = await axios.get(url)
-      // console.log(locData)
       let oneObject = locData.data[0];
-      // console.log(oneObject)
       this.setState({ locationObj: oneObject })
 
-      let mapUrl = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${oneObject.lat},${oneObject.lon}&zoom=14&size=480x480`
+      let mapUrl = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${oneObject.lat},${oneObject.lon}&zoom=13&size=480x480`
       this.setState({ map: mapUrl })
       this.getWeather()
     }
@@ -50,24 +55,41 @@ class App extends React.Component {
       this.setState({ errorAlert: true })
     };
   }
-  
+
   getWeather = async () => {
     let weatherUrl = `http://localhost:3001/weather?lat=${this.state.locationObj.lat}&lon=${this.state.locationObj.lon}&city=${this.state.cityName}`
 
     try {
       let weatherData = await axios.get(weatherUrl)
       let weatherObject = weatherData.data
-      this.setState({weather: weatherObject})
+      this.setState({ weather: weatherObject })
     }
     catch (error) {
-      console.log(`there was an error with the weather call: ${error}`)
+      console.log(`there was an error with the weather cell: ${error}`)
       this.setState({ errorCode: error.message })
       this.setState({ errorAlert: true })
+
     };
   }
-  
+
+  getMovies = async () => {
+    let movieURL = `http://localhost:3001/movies?city=${this.state.cityName}`
+
+    try {
+      let movieData = await axios.get(movieURL);
+      // console.log(movieData.data)
+      let movieArr = movieData.data
+      this.setState({ movies: movieArr })
+    }
+    catch (error) {
+      console.log(`there was an error with the movie cell: ${error}`)
+      this.setState({ errorCode: error.message })
+      this.setState({ errorAlert: true })
+    }
+  }
+
   render() {
-    // console.log(this.state.weather)
+    // console.log(this.state.movies)
     return (
       <>
         <Container className='d-flex justify-content-center m-4'>
@@ -82,7 +104,7 @@ class App extends React.Component {
         <AlertDismissible
           errorCode={this.state.errorCode}
           errorAlert={this.state.errorAlert}
-          onErrorClose={this.onErrorClose}/>
+          onErrorClose={this.onErrorClose} />
         {this.state.locationObj.display_name &&
           <Container>
             <Row>
@@ -90,13 +112,25 @@ class App extends React.Component {
             </Row>
             <LatLong latLong={this.state.locationObj} />
             <Row>
-            <Col><Map map={this.state.map} /></Col>
+              <Col><Map map={this.state.map} /></Col>
             </Row>
+
+            <Row>
+              <Button onClick={this.getMovies}>See Movies About {this.state.cityName}!
+              </Button>
+              {this.state.movies.length > 0 &&
+                <Movie
+                  movies={this.state.movies} />
+              }
+            </Row>
+
+
+
+
             <Col>
-            {this.state.weather.length > 0 &&
-            <Weather weather={this.state.weather}/>      
-            
-            }
+              {this.state.weather.length > 0 &&
+              <Weather weather={this.state.weather} />
+              }
             </Col>
           </Container>
         }
