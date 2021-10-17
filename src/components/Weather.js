@@ -7,18 +7,34 @@ class Weather extends React.Component {
 
   render() {
     return (
-      <>
-      <Row>
+
+        <Row className='d-flex justify-content-center m-4 border border-info'>
+          <h1>Weather Data</h1>
         <Col>
-        <h1>
-        Weather Report: {this.props.weather}
-        </h1>
+          <Row className='border border-info'>
+            <h4>{this.props.weather[0].date}</h4>
+            <h4>{this.props.weather[0].description}</h4>
+          </Row>
         </Col>
-      </Row>
-      </>
+        <Col>
+          <Row className='border border-info'>
+            <h4>{this.props.weather[1].date}</h4>
+            <h4>{this.props.weather[1].description}</h4>
+          </Row>
+        </Col>
+        <Col>
+          <Row className='border border-info'>
+            <h4>{this.props.weather[2].date}</h4>
+            <h4>{this.props.weather[2].description}</h4>
+          </Row>
+        </Col>
+        </Row>
     );
   }
 }
 
+// class WeatherClass {
+//   constructor()
+// }
 
 export default Weather
