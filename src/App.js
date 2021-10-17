@@ -32,8 +32,8 @@ class App extends React.Component {
     this.setState({ errorAlert: false })
   }
 
-  onMovieClose = () => {
-    this.setState({ movieBar: false })
+  toggleModal = () => {
+    this.setState({ showModal: !this.state.showModal })
   }
 
 
@@ -80,6 +80,7 @@ class App extends React.Component {
       // console.log(movieData.data)
       let movieArr = movieData.data
       this.setState({ movies: movieArr })
+
     }
     catch (error) {
       console.log(`there was an error with the movie cell: ${error}`)
@@ -129,7 +130,7 @@ class App extends React.Component {
 
             <Col>
               {this.state.weather.length > 0 &&
-              <Weather weather={this.state.weather} />
+                <Weather weather={this.state.weather} />
               }
             </Col>
           </Container>
