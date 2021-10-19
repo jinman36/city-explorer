@@ -10,7 +10,7 @@ import Map from './components/Map';
 import LatLong from './components/LatLong.js'
 import Weather from './components/Weather'
 import Movie from './components/Movie'
-
+import Main from './components/Main.js'
 
 
 class App extends React.Component {
@@ -93,6 +93,7 @@ class App extends React.Component {
     // console.log(this.state.movies)
     return (
       <>
+      <Main />
         <Container className='d-flex justify-content-center m-4'>
           <h2>Enter a City to Explore</h2>
           <input onChange={(event) => this.setState({ cityName: event.target.value })}>
