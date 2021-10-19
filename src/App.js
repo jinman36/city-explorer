@@ -28,15 +28,6 @@ class App extends React.Component {
     }
   }
 
-  onErrorClose = () => {
-    this.setState({ errorAlert: false })
-  }
-
-  toggleModal = () => {
-    this.setState({ showModal: !this.state.showModal })
-  }
-
-
   getLocation = async () => {
     let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_API_KEY}&q=${this.state.cityName}&format=json`;
 
