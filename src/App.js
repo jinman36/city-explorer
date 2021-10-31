@@ -9,7 +9,6 @@ import AlertDismissible from './components/AlertDismissible';
 import Map from './components/Map';
 import LatLong from './components/LatLong.js'
 import Weather from './components/Weather'
-import Movie from './components/Movie'
 import Main from './components/Main.js'
 
 
@@ -24,7 +23,8 @@ class App extends React.Component {
       errorAlert: false,
       weather: [],
       movies: [],
-      movieBar: false
+      movieBar: false,
+      showItem: false
     }
   }
 
@@ -39,6 +39,7 @@ class App extends React.Component {
       let mapUrl = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${oneObject.lat},${oneObject.lon}&zoom=13&size=480x480`
       this.setState({ map: mapUrl })
       this.getWeather()
+      this.getMovies()
     }
     catch (error) {
       console.log(`there was an App.js error: ${error}`)
@@ -64,13 +65,13 @@ class App extends React.Component {
   }
 
   getMovies = async () => {
-    let movieURL = `http://localhost:3001/movies?city=${this.state.cityName}`
+    let movieURL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&page=1&query=${this.state.cityName}`
 
     try {
       let movieData = await axios.get(movieURL);
       // console.log(movieData.data)
       let movieArr = movieData.data
-      this.setState({ movies: movieArr })
+      this.setState({ movies: movieArr, showItem: true })
 
     }
     catch (error) {
@@ -79,17 +80,18 @@ class App extends React.Component {
       this.setState({ errorAlert: true })
     }
   }
-
+  
   render() {
+    console.log('App.js state' , this.state.movies)
     // console.log(this.state.movies)
     return (
       <>
-      <Main />
+
         <Container className='d-flex justify-content-center m-4'>
           <h2>Enter a City to Explore</h2>
           <input onChange={(event) => this.setState({ cityName: event.target.value })}>
           </input>
-          <Button variant="info" onClick={this.getLocation}>
+          <Button variant="info" onClick={this.getLocation} >
             Explore!
           </Button>
         </Container>
@@ -107,24 +109,17 @@ class App extends React.Component {
             <Row>
               <Col><Map map={this.state.map} /></Col>
             </Row>
-
-            <Row>
-              <Button onClick={this.getMovies}>See Movies About {this.state.cityName}!
-              </Button>
-              {this.state.movies.length > 0 &&
-                <Movie
-                  movies={this.state.movies} />
-              }
-            </Row>
-
-
-
-
             <Col>
               {this.state.weather.length > 0 &&
                 <Weather weather={this.state.weather} />
               }
             </Col>
+            <Row>
+
+            <Main movies={this.state.movies} 
+            showItem={this.state.showItem}/> :
+
+            </Row>
           </Container>
         }
       </>
