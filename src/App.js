@@ -65,7 +65,7 @@ class App extends React.Component {
   }
 
   getMovies = async () => {
-    let movieURL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&page=1&query=${this.state.cityName}`
+    let movieURL = `https://git.heroku.com/jinman-city-explorer-api.git`
 
     try {
       let movieData = await axios.get(movieURL);
